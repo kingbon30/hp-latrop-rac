@@ -1,0 +1,123 @@
+listing_id				string		
+make				string
+milleage				integer		null
+model					string		
+engine					integer		null
+year					integer		
+edition					string		null
+transmission			string		null
+fuel
+door					integer		
+seat					integer
+drivetype				string
+condition				string
+bodytype				string
+vehicle_price			string
+vehicle_color			string
+vehicle_price_detail 	string
+description				text
+vehicle_status			boolean		null
+vehicle_approval		boolean		null
+vehicle_slug			text
+images					text		null
+
+
+
+
+@foreach($blog_categories as $blog_category)
+<option value="{{ $blog_category->blog_category_name}}" 
+@foreach(explode(',', $blog_post->blog_post_category) as $info) 
+@if ($info == $blog_category->blog_category_name)
+selected
+@endif
+@endforeach
+>{{ $blog_category->blog_category_name}}</option>
+@endforeach
+
+$blog_posts->blog_post_category = implode(',', $request['blog_post_category']);
+@if ($blog_post->blog_post_category != "")
+    <td>@foreach(explode(',', $blog_post->blog_post_category) as $info) 
+      {{$info}},
+    @endforeach</td>
+  @endif
+        $slug = $request->listing_id.$request->description;
+        $vehicles->vehicle_slug = $slug;
+@foreach(explode(',', $vehicle->images) as $info) data-img-url="{{$vehicle->images}}" @endforeach 
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc interdum tempor metus vel molestie. Nunc feugiat sagittis orci, eu ullamcorper nulla pretium non. Vestibulum commodo mattis facilisis. Cras sed efficitur leo. Praesent tellus augue, pharetra in quam et, rutrum tristique magna. Cras efficitur mi erat, tempor elementum erat porttitor sed. Proin vestibulum pharetra nulla. Cras maximus at arcu malesuada efficitur. Cras vestibulum metus ac congue maximus. Cras vitae nulla a dolor cursus semper.
+
+Vivamus metus tellus, dictum sit amet tellus eu, molestie tristique diam. Sed eget elementum elit. Nunc pulvinar iaculis dapibus. Etiam convallis id mi ut rutrum. In laoreet neque eu lectus fringilla volutpat. Maecenas tincidunt diam tellus, vitae iaculis risus rhoncus et. Integer vestibulum cursus libero, venenatis euismod massa placerat et. Suspendisse pretium ante odio, in interdum eros egestas vel. Integer consectetur sed sapien quis volutpat. Suspendisse egestas molestie ullamcorper. Suspendisse urna justo, dapibus ut hendrerit non, eleifend quis eros. Nam lobortis libero quis molestie finibus. In hac habitasse platea dictumst. Aliquam fringilla mattis eros eu molestie. Vestibulum aliquam tortor nec mi bibendum, et bibendum diam bibendum.
+
+Cras aliquam porta turpis, tincidunt accumsan nunc tristique quis. Quisque placerat neque at elit euismod fermentum. Donec fringilla lectus et viverra mollis. Aliquam erat volutpat. Curabitur ornare enim non ex porttitor, vehicula vehicula leo rutrum. Donec ante elit, fringilla non mollis et, cursus vulputate augue. Etiam tristique nulla sit amet bibendum hendrerit. Maecenas elementum volutpat scelerisque. Proin auctor, erat et dictum tincidunt, justo risus venenatis metus, eu semper sem ante at felis.
+
+Integer velit libero, auctor id euismod convallis, laoreet non libero. In et dolor felis. Vivamus sit amet tincidunt leo. Aliquam pretium dolor elit. Donec interdum ligula in dui laoreet ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur non sagittis dolor. Curabitur venenatis gravida nisl et condimentum. Curabitur ut tristique turpis. Mauris elementum arcu ac justo commodo lobortis. Morbi sit amet magna eget lectus dictum iaculis. Praesent imperdiet porta dolor vitae mattis. Sed erat orci, laoreet non dui et, finibus porta eros. Sed in elementum quam.
+
+Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus sed erat a elit ullamcorper sodales. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi feugiat sodales justo luctus consectetur. Mauris metus sem, maximus vitae facilisis ut, fermentum tempus nulla. Donec imperdiet lobortis nibh nec malesuada. Cras id lacus facilisis, tristique odio quis, porta sapien. 
+
+<script type="text/javascript">
+	var $vehicleslug = $("#vehicle_slug");
+	var $makename = $("#make_name");
+	var $madelname = $("#model_name");
+	var $year = $("#year");
+	var slug = function(str) {
+		  var $slug = '';
+		  var trimmed = $.trim(str);
+		  $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+		  replace(/-+/g, '-').
+		  replace(/^-|-$/g, '');
+		  return $slug.toLowerCase();
+		}
+
+	$('select').change(function () {
+		var val = $makename.val() + "." + $modelname.val() + "." + $year.val() ;
+	    $vehicleslug.val(slug(val) );
+	});
+	
+</script>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Upload Multipli FIles</title>
+</head>
+<body>
+<form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ route('vehicles.store')}}">
+	@csrf
+	<input  type="file" class="form-control" name="images[]" placeholder="Images" id="gallery-photo-add"  multiple  required  >
+	<input  type="text" class="form-control" name="description" placeholder="description" >
+	<input type="submit" value="Save">
+</form>
+<a href="{{url('admin/vehicles')}}">Back</a>
+<!-- jQuery 3 -->
+<script src="{{ asset('asset-admin/bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+<div class="gallery"></div>
+</body>
+<!-- jQuery 3 -->
+<script src="{{ asset('asset-admin/bower_components/jquery/dist/jquery.min.js')}}"></script>
+<script type="text/javascript">
+	$(function() {
+    // Multiple images preview in browser
+    var imagesPreview = function(input, placeToInsertImagePreview) {
+        if (input.files) {
+            var filesAmount = input.files.length;
+
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                }
+
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+    };
+
+    $('#gallery-photo-add').on('change', function() {
+        imagesPreview(this, 'div.gallery');
+    });
+});
+</script>
+
+</html>
